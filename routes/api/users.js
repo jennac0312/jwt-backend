@@ -82,7 +82,10 @@ router.post( '/', [
         // creat JWT payload ( {} bc we can store more info than any other datatype )
         const payload = {
             user: {
-                id: user.id // using id that database generates
+                id: user.id, // using id that database generates
+                // name: user.name
+                // this is what shows up in jwt.io token payload
+                email: user.email
             }
         }
         // create and sign JWT token to send back to front end ( create, sign and send )
@@ -94,7 +97,7 @@ router.post( '/', [
             ( err, token ) => { //callback
                 if(err) throw err; // trigger and it'll be sent (?)
 
-                res.json({ token })
+                res.json({ token }) // send back to frontend can be ran thru the token debugger to see the information ?? cool jwt.io gives us content from user object 
             }
 
         )
