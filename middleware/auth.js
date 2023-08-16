@@ -21,7 +21,7 @@ module.exports = function( req, res, next ){
         const decoded = jwt.verify( token, process.env.jwtSecret )
         // decode, using token and out secret password, going to verify the token
 
-        req.user = decoded.user
+        req.user = decoded.user // pulled user from token
 
         next() // to move to next step of middleware and/or route
 
