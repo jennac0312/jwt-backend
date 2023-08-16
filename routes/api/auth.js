@@ -59,6 +59,49 @@ router.post( '/', [
             // post request to /api/auth headers: nothing extra
             //  body -> json { "email": "", "password", "" }
             // should return user from body ( only email and password)
+
+    // desctruture
+    const { email, password } = req.body
+    try {
+        // search database for user specific email
+        let user = await User.findOne( { email } )
+
+        // if user exists send error message
+        if( !user ){
+            res.status(400).json( { errors: [{ msg: "Invalid Credentials" }] } ) // dont tell front end any specifics
+        }
+
+        const isMatch = await bcrypt.compare( password, user.password )
+        //  takes password we're given compared to user.password form datatbase... return boolean
+
+        if( !isMatch ){
+            return res.status(400).json( { errors: [{ msg: "Invalid Credentials" }] } ) // be generic with errors
+        }
+
+        // if gets pass everyting above lol, create webtoken, and payload
+        //Create a JWT
+      const payload = {
+        user: {
+          id: user.id,
+          name: user.name,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        process.env.jwtSecret,
+        { expiresIn: 3600 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
+        
+    } catch (error) {
+        console.error( error.message )
+        res.status(500).send( "Server Error" )
+        //  500 - server error
+    }
 })
 
 module.exports = router; //exports all router.'s
