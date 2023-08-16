@@ -14,5 +14,19 @@ module.exports = function( req, res, next ){
         // 401 - authorization denied
         // when using this middleware we are checking whether or not someone has authorizaiton
     }
+
+    //  verify token is exists
+    try {
+        // decode our json web token so can read the data inside it (inside the payload)
+        const decoded = jwt.verify( token, process.env.jwtSecret )
+        // decode, using token and out secret password, going to verify the token
+
+        req.user = decoded.user
+
+        next() // to move to next step of middleware and/or route
+
+    } catch (error) {
+        res.stats(401).json( { msg: "Token is not valid" } )
+    }
 }
 
