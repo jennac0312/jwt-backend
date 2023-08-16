@@ -16,3 +16,5 @@ const UserSchema = new mongoose.Schema({
 });
 
 module.exports = User = mongoose.model('user', UserSchema);
+
+//  shemas are the template for data we save in our database.
