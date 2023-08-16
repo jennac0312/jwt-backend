@@ -83,9 +83,9 @@ router.post( '/', [
         const payload = {
             user: {
                 id: user.id, // using id that database generates
-                // name: user.name
+                name: user.name,
                 // this is what shows up in jwt.io token payload
-                email: user.email
+                // email: user.email
             }
         }
         // create and sign JWT token to send back to front end ( create, sign and send )
